@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muratberk English Words</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    input, select { margin-bottom: 10px; padding: 8px; width: 100%; max-width: 400px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1>Muratberk English Words</h1>
+  <input type="text" id="search" placeholder="Search English or Turkish...">
+  <table>
+    <thead>
+      <tr>
+        <th>English</th>
+        <th>Turkish</th>
+        <th>Pronunciation</th>
+      </tr>
+    </thead>
+    <tbody id="wordTable"></tbody>
+  </table>
+
+  <script>
+    const words = `agree:Katılmak, aynı fikirde olmak:ıgrii
+answer:Cevap vermek:ensır
+ask:Sormak:ask
+be:Olmak:bi
+begin:Başlamak:bigın
+believe:İnanmak:biliv
+break:Kırmak:breyk
+bring:Getirmek:brinğ
+build:İnşa etmek:bild
+buy:Satın almak:bay
+call:Aramak, çağırmak:kol
+cancel:İptal etmek:kensıl
+choose:Seçmek:çuz
+close:Kapatmak:kıloz
+come:Gelmek:kım
+copy:Kopyalamak:kapi
+cut:Kesmek:kat
+dance:Dans etmek:dens
+delete:Silmek:dıliit
+do:Yapmak:duu
+draw:Çizmek:drô
+dream:Hayal kurmak:driim
+eat:Yemek:iit
+end:Bitirmek:end
+enter:Girmek:entır
+exit:Çıkmak:egzit
+find:Bulmak:faynd
+fly:Uçmak:flay
+get:Edinmek, sahip olmak:get
+go:Gitmek:gou
+give:Vermek:giv
+have:Sahip olmak:hev
+know:Bilmek:nou
+lie:Yalan söylemek:lay
+like:Beğenmek, hoşlanmak:layk
+listen:Dinlemek:lisın
+live:Yaşamak:liv
+love:Sevmek:lav
+make:Yapmak:meyk
+open:Açmak:opın
+pay:Ödemek:pey
+play:Oynamak:pley
+pull:Çekmek:pul
+putt:Koymak:put
+read:Okumak:riid
+run:Koşmak:ran
+say:Söylemek:sey
+see:Görmek:sii
+show:Göstermek:şou
+sit:Oturmak:sit
+speak:Konuşmak:spiik
+start:Başlamak:starıt
+stay:Kalmak:stey
+stop:Durmak:stop
+swim:Yüzmek:swim
+take:Almak:teyk
+talk:Konuşmak:tolk
+use:Kullanmak:yuz
+want:İstemek:want
+write:Yazmak:rayt`;
+
+    const wordList = words.trim().split('\n').map(line => line.split(':'));
+
+    const wordTable = document.getElementById("wordTable");
+    const search = document.getElementById("search");
+
+    function displayWords(filteredWords) {
+      wordTable.innerHTML = "";
+      filteredWords.forEach(([eng, tr, pr]) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${eng}</td><td>${tr}</td><td>${pr}</td>`;
+        wordTable.appendChild(row);
+      });
+    }
+
+    search.addEventListener("input", () => {
+      const value = search.value.toLowerCase();
+      const filtered = wordList.filter(([eng, tr]) => eng.toLowerCase().includes(value) || tr.toLowerCase().includes(value));
+      displayWords(filtered);
+    });
+
+    displayWords(wordList);
+  </script>
+</body>
+</html>

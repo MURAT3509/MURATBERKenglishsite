@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +7,11 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     h1 { text-align: center; }
-    input, select { margin-bottom: 10px; padding: 8px; width: 100%; max-width: 400px; }
+    input { margin-bottom: 10px; padding: 8px; width: 100%; max-width: 400px; display: block; margin-left: auto; margin-right: auto; }
     table { border-collapse: collapse; width: 100%; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     th { background-color: #f4f4f4; }
+    button.audio-btn { padding: 4px 8px; margin-left: 6px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -23,13 +23,14 @@
         <th>English</th>
         <th>Turkish</th>
         <th>Pronunciation</th>
+        <th>Sound</th>
       </tr>
     </thead>
     <tbody id="wordTable"></tbody>
   </table>
 
   <script>
-    const words = `agree:Katılmak, aynı fikirde olmak:ıgrii
+    const wordsRaw = `agree:Katılmak, aynı fikirde olmak:ıgrii
 answer:Cevap vermek:ensır
 ask:Sormak:ask
 be:Olmak:bi
@@ -72,7 +73,7 @@ open:Açmak:opın
 pay:Ödemek:pey
 play:Oynamak:pley
 pull:Çekmek:pul
-putt:Koymak:put
+put:Koymak:put
 read:Okumak:riid
 run:Koşmak:ran
 say:Söylemek:sey
@@ -90,16 +91,21 @@ use:Kullanmak:yuz
 want:İstemek:want
 write:Yazmak:rayt`;
 
-    const wordList = words.trim().split('\n').map(line => line.split(':'));
-
+    const wordList = wordsRaw.trim().split('\n').map(line => line.split(':'));
     const wordTable = document.getElementById("wordTable");
     const search = document.getElementById("search");
+
+    function speakWord(word) {
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+    }
 
     function displayWords(filteredWords) {
       wordTable.innerHTML = "";
       filteredWords.forEach(([eng, tr, pr]) => {
         const row = document.createElement("tr");
-        row.innerHTML = `<td>${eng}</td><td>${tr}</td><td>${pr}</td>`;
+        row.innerHTML = `<td>${eng}</td><td>${tr}</td><td>${pr}</td><td><button class="audio-btn" onclick="speakWord('${eng}')">🔊</button></td>`;
         wordTable.appendChild(row);
       });
     }
@@ -110,6 +116,7 @@ write:Yazmak:rayt`;
       displayWords(filtered);
     });
 
+    window.speakWord = speakWord;
     displayWords(wordList);
   </script>
 </body>
